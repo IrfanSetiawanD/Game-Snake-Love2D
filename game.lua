@@ -1,5 +1,8 @@
 game = {}
 
+score = 0
+bestScore = 0
+
 function game.load()
     snakeHead = love.graphics.newImage("assets/snake_head.png")
     snakeBody = love.graphics.newImage("assets/snake_body.png")
@@ -7,6 +10,7 @@ function game.load()
 
     bgMusic = love.audio.newSource("assets/bg_music.mp3", "stream")
     eatSound = love.audio.newSource("assets/eat.wav", "static")
+    newBestSound = love.audio.newSource("assets/new_best.wav", "static")
     gameOverSound = love.audio.newSource("assets/gameover.wav", "static")
 
     bgMusic:setLooping(true)
@@ -72,6 +76,11 @@ function moveSnake()
     if head.x == food.x and head.y == food.y then
         love.audio.play(eatSound)
         score = score + 1
+        -- Update Best Score jika Score lebih tinggi
+    if score > bestScore then
+        love.audio.play(newBestSound)  -- Play sfx jika score baru tinggi
+        bestScore = score
+    end
         spawnFood()
     else
         table.remove(snake.body)
@@ -118,6 +127,11 @@ function game.draw()
 
     -- Gambar mouse tanpa scaling
     love.graphics.draw(mouse, food.x * gridSize, food.y * gridSize)
+
+    -- **Tambahkan teks Score dan Best Score**
+    love.graphics.setColor(1, 1, 1) -- Warna putih untuk teks
+    love.graphics.print("Score: " .. score, 10, 10)
+    love.graphics.print("Best Score: " .. bestScore, 10, 30)
 end
 
 return game
