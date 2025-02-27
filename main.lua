@@ -6,6 +6,7 @@ require "game"
 require "settings"
 
 function love.load()
+    background = love.graphics.newImage("assets/Munchy Snake.JPG")
     gameState = "menu"
     menu.load()
     game.load()
@@ -24,6 +25,7 @@ end
 
 function love.draw()
     if gameState == "menu" then
+        love.graphics.draw(background, 0, 0)
         menu.draw()
     elseif gameState == "playing" then
         game.draw()
