@@ -35,7 +35,7 @@ touchButtons = {
 }
 
 function love.load()
-    background = love.graphics.newImage("assets/Munchy Snake.JPG")
+    background = love.graphics.newImage("assets/Munchy Snake.jpg")
     gameState = "menu"
     menu.load()
     game.load()
