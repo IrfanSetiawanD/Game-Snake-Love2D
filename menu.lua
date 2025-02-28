@@ -3,33 +3,82 @@ menu = {}
 function menu.load()
     menu.options = {"Start", "Settings", "Exit"}
     menu.selected = 1
+    menu.font = love.graphics.newFont(42)
 end
 
 function menu.update(dt)
-    -- Kosongkan jika belum ada logika update untuk menu
 end
 
+function handleMenuSelection()
+    if selectedMenuIndex == 1 then
+        gameState = "playing"
+    elseif selectedMenuIndex == 2 then
+        gameState = "settings"
+    elseif selectedMenuIndex == 3 then
+        love.event.quit()
+    end
+end
+
+function handleSettingsSelection()
+    -- Tambahkan logika setting di sini
+    gameState = "menu"
+end
+
+function handlePauseSelection()
+    if selectedMenuIndex == 1 then
+        gameState = "playing"
+    elseif selectedMenuIndex == 2 then
+        gameState = "menu"
+    end
+end
+
+
 function menu.draw()
-    love.graphics.printf("SNAKE GAME", 0, 100, love.graphics.getWidth(), "center")
+    love.graphics.setFont(menu.font)
+
+    local textColor = {1, 1, 1}  -- Putih
+    local shadowColor = {0, 0, 0} -- Hitam
+    local highlightColor = {1, 1, 0} -- Kuning
+
+    local width = love.graphics.getWidth()
+    local totalHeight = #menu.options * 50  -- Tinggi semua opsi menu
+    local startY = (love.graphics.getHeight() - totalHeight) / 2  -- Mulai dari tengah layar
 
     for i, option in ipairs(menu.options) do
+        local y = startY + (i - 1) * 50
+
+        -- Shadow
+        love.graphics.setColor(shadowColor)
+        love.graphics.printf(option, 2, y + 2, width, "center")
+
+        -- Teks utama
         if i == menu.selected then
-            love.graphics.setColor(1, 1, 0)
+            love.graphics.setColor(highlightColor) -- Kuning untuk opsi terpilih
         else
-            love.graphics.setColor(1, 1, 1)
+            love.graphics.setColor(textColor) -- Putih untuk opsi lain
         end
-        love.graphics.printf(option, 0, 200 + (i - 1) * 40, love.graphics.getWidth(), "center")
+        love.graphics.printf(option, 0, y, width, "center")
     end
+
+    love.graphics.setColor(1, 1, 1) -- Reset warna
 end
 
 function menu.keypressed(key)
     if key == "down" then
-        menu.selected = (menu.selected % #menu.options) + 1
+        menu.selected = menu.selected + 1
+        if menu.selected > #menu.options then
+            menu.selected = 1
+        end
     elseif key == "up" then
-        menu.selected = (menu.selected - 2) % #menu.options + 1
-    elseif key == "return" then
+        menu.selected = menu.selected - 1
+        if menu.selected < 1 then
+            menu.selected = #menu.options
+        end
+    elseif key == "return" or key == "space" then
         if menu.selected == 1 then
-            game.reset()
+            if game.reset then
+                game.reset()
+            end
             gameState = "playing"
         elseif menu.selected == 2 then
             gameState = "settings"
