@@ -88,4 +88,26 @@ function menu.keypressed(key)
     end
 end
 
+function menu.input()
+    if menu.selected == 1 then
+        game.reset()
+        gameState = "playing"
+    elseif menu.selected == 2 then
+        gameState = "settings"
+    elseif menu.selected == 3 then
+        love.event.quit()
+    end
+end
+
+function menu.touchpressed(x, y)
+    local menuStartY = (love.graphics.getHeight() - (#menu.options * 50)) / 2
+    for i, _ in ipairs(menu.options) do
+        local optionY = menuStartY + (i - 1) * 50
+        if y >= optionY and y <= optionY + 50 then
+            menu.selected = i
+            menu.input()
+        end
+    end
+end
+
 return menu

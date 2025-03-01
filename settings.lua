@@ -122,4 +122,25 @@ function settings.keypressed(key)
     end
 end
 
+function settings.input()
+    if settings.selected == 1 then
+        settings.bgVolume = math.min(1, settings.bgVolume + 0.1)
+    elseif settings.selected == 2 then
+        settings.sfxVolume = math.min(1, settings.sfxVolume + 0.1)
+    elseif settings.selected == 3 then
+        gameState = "menu"
+    end
+end
+
+function settings.touchpressed(x, y)
+    local settingsStartY = (love.graphics.getHeight() - (#settings.options * 50)) / 2
+    for i, _ in ipairs(settings.options) do
+        local optionY = settingsStartY + (i - 1) * 50
+        if y >= optionY and y <= optionY + 50 then
+            settings.selected = i
+            settings.input()
+        end
+    end
+end
+
 return settings

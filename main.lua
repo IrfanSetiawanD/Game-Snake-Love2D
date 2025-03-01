@@ -27,13 +27,6 @@ require "settings"
 
 local background, bgScaleX, bgScaleY
 
-touchButtons = {
-    up = {x = 50, y = screenHeight - 200, width = 80, height = 80},
-    down = {x = 50, y = screenHeight - 100, width = 80, height = 80},
-    select = {x = screenWidth - 150, y = screenHeight - 150, width = 100, height = 100},
-    back = {x = screenWidth - 300, y = screenHeight - 150, width = 100, height = 100}
-}
-
 function love.load()
     background = love.graphics.newImage("assets/Munchy Snake.jpg")
     gameState = "menu"
@@ -57,24 +50,6 @@ function love.update(dt)
 end
 
 function love.draw()
-    function drawTouchButtons()
-        love.graphics.setColor(0, 0, 0, 0.5)
-        
-        -- Tombol Up
-        love.graphics.rectangle("fill", touchButtons.up.x, touchButtons.up.y, touchButtons.up.width, touchButtons.up.height, 10)
-        
-        -- Tombol Down
-        love.graphics.rectangle("fill", touchButtons.down.x, touchButtons.down.y, touchButtons.down.width, touchButtons.down.height, 10)
-        
-        -- Tombol Select
-        love.graphics.rectangle("fill", touchButtons.select.x, touchButtons.select.y, touchButtons.select.width, touchButtons.select.height, 10)
-    
-        -- Tombol Back
-        love.graphics.rectangle("fill", touchButtons.back.x, touchButtons.back.y, touchButtons.back.width, touchButtons.back.height, 10)
-        
-        love.graphics.setColor(1, 1, 1)  -- Reset warna ke putih
-    end
-    
     -- Gambar background agar sesuai dengan layar
     love.graphics.draw(background, 0, 0, 0, bgScaleX, bgScaleY)
 
@@ -91,37 +66,6 @@ function love.draw()
     elseif gameState == "settings" then
         settings.draw()
     end
-    drawTouchButtons()
-end
-
-function love.touchpressed(id, x, y)
-    if gameState == "menu" or gameState == "settings" or gameState == "paused" then
-        if checkButtonPress(touchButtons.up, x, y) then
-            selectedMenuIndex = selectedMenuIndex - 1
-            if selectedMenuIndex < 1 then selectedMenuIndex = #menuOptions end
-        elseif checkButtonPress(touchButtons.down, x, y) then
-            selectedMenuIndex = selectedMenuIndex + 1
-            if selectedMenuIndex > #menuOptions then selectedMenuIndex = 1 end
-        elseif checkButtonPress(touchButtons.select, x, y) then
-            if gameState == "menu" then
-                handleMenuSelection()
-            elseif gameState == "settings" then
-                handleSettingsSelection()
-            elseif gameState == "paused" then
-                handlePauseSelection()
-            end
-        elseif checkButtonPress(touchButtons.back, x, y) then
-            if gameState == "settings" then
-                gameState = "menu"
-            elseif gameState == "paused" then
-                gameState = "playing"
-            end
-        end
-    end
-end
-
-function checkButtonPress(button, x, y)
-    return x >= button.x and x <= button.x + button.width and y >= button.y and y <= button.y + button.height
 end
 
 previousState = "menu"  -- Menyimpan state sebelum masuk ke settings
@@ -241,5 +185,19 @@ function love.keypressed(key)
         end
     elseif gameState == "settings" then
         settings.keypressed(key)
+    end
+end
+
+function love.touchpressed(id, x, y, dx, dy, pressure)
+    if gameState == "menu" then
+        menu.touchpressed(x, y)
+    elseif gameState == "playing" then
+        game.touchpressed(x, y)
+    elseif gameState == "paused" then
+        game.touchpressed(x, y)
+    elseif gameState == "gameover" then
+        game.touchpressed(x, y)
+    elseif gameState == "settings" then
+        settings.touchpressed(x, y)
     end
 end

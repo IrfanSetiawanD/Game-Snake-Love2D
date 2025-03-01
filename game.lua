@@ -42,8 +42,6 @@ function game.load()
     mouseScaleX = gridSize / mouse:getWidth()
     mouseScaleY = gridSize / mouse:getHeight()
 
-    game.lastScreen = nil  -- Menyimpan tampilan terakhir
-
     game.reset()
 end
 
@@ -55,12 +53,6 @@ function game.update(dt)
             moveSnake()
         end
     end
-end
-
-function game.captureScreen()
-    love.graphics.captureScreenshot(function(screenshot)
-        game.lastScreen = love.graphics.newImage(screenshot)
-    end)
 end
 
 function game.reset()
@@ -152,7 +144,6 @@ function game.keypressed(key)
         elseif key == "right" and snake.dir.x == 0 then
             snake.dir = {x = 1, y = 0}
         elseif key == "escape" then
-            game.captureScreen()
             gameState = "paused"  -- Masuk ke mode pause
         end
     elseif gameState == "paused" then
@@ -166,6 +157,40 @@ function game.keypressed(key)
             elseif key == "escape" then
                 gameState = "menu"
             end
+        end
+    end
+
+    function game.input(action)
+        if gameState == "playing" then
+            if action == "left" and snake.dir.x == 0 then
+                snake.dir = {x = 1, y = 0}
+            elseif action == "right" and snake.dir.x == 0 then
+                snake.dir = {x = -1, y = 0}
+            elseif action == "up" and snake.dir.y == 0 then
+                snake.dir = {x = 0, y = 1}
+            elseif action == "down" and snake.dir.y == 0 then
+                snake.dir = {x = 0, y = -1}
+            end
+        elseif gameState == "gameover" and action == "start" then
+            game.reset()
+            gameState = "playing"
+        end
+    end
+
+    function game.touchpressed(x, y)
+        local centerX = screenWidth / 2
+        local centerY = screenHeight / 2
+        
+        if x < centerX - 50 then
+            game.input("left")
+        elseif x > centerX + 50 then
+            game.input("right")
+        elseif y < centerY - 50 then
+            game.input("up")
+        elseif y > centerY + 50 then
+            game.input("down")
+        else
+            game.input("start")
         end
     end
 
