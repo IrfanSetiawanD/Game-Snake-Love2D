@@ -2,11 +2,7 @@ Simple Love2D Game
 
 Game ular sederhana yang dibuat menggunakan Love2D dengan bahasa pemrograman Lua.
 
-![Main Menu](https://github.com/user-attachments/assets/f8dfd3c4-0d7f-4920-ac68-fe0a25f7c353)
-![Settings](https://github.com/user-attachments/assets/b5761b19-031f-4f75-a655-aad87560b535)
-![In Game](https://github.com/user-attachments/assets/29abfd73-1a0d-40e3-9bf1-cda4c72eff76)
-![Pause](https://github.com/user-attachments/assets/577c5d9b-92fa-4813-93a2-5cf0f709bce7)
-![Game Over](https://github.com/user-attachments/assets/1eb4944e-c896-45ef-9b17-203e2db788e4)
+Game ini bisa dimainkan di PC (Windows) dan Android.
 
 
 📌 Fitur
@@ -53,6 +49,35 @@ P → Pause game
 
 Escape → Kembali ke menu utama
 
+📱 Kontrol di Android
 
-✨ Kontributor
-Irfan Setiawan Dawolo
+swipe di layar untuk menggerakkan ular.
+
+Tap tombol untuk navigasi.
+
+
+🛠️ Instalasi
+Windows
+
+Download & Install Love2D
+
+Unduh dari: https://love2d.org
+
+Create a shortcut on your desktop (or other place), go to the path where love is installed and go to send to desktop
+
+Drag and drop the folder (Game-Snake-Love2D) on love2d shortcut
+
+Android
+
+Download Love2d.apk
+
+Unduh dari: https://love2d.org
+
+download file game.zip dan ubah menjadi .love
+
+jalankan apk dengan memilih file Munchy SnakZzz.love
+
+👨‍💻 Author
+
+📝 Irfan Setiawan Dawolo
+
